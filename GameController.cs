@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameController : MonoBehaviour 
 {
-	public GameObject hazard;
+	public GameObject hazard; //référence à l'asteroïde
 	public Vector3 spawnValues;
 	public int hazardCount;
 	public float spawnWait;
@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
 	private bool restart;
 	private int score;
 	private int missed;
-
+    
 	void Start()
 	{
 		gameOver = false;
@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour
 		{
 			for (int i = 0; i< hazardCount; ++i) 
 			{
+                //Les spawnspots sont définis , y et z dans l'éditeur et x au random et grâce à l'éditeur
 				Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
 				Quaternion spawnRotation = Quaternion.identity;
 				Instantiate (hazard, spawnPosition, spawnRotation);

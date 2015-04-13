@@ -15,3 +15,9 @@ Pour lumière  : shader -unlit - texture
 Script : Ajouter les script sur les composants
 
 Enlever noir sur une texture (par exemple bolt) : Shader - particles - additive
+
+Faire des boundaries : create - cube- 	mettre IsTrigger pour intéragir avec des déclenchements - adapter la taille à l'écran/map
+
+Angular Drag simule la résitance de l'air et freine la rotation jusqu'à stop.
+
+Pour les explosions, on peut utiliser Destroy(object,time) afin de spécifier le temps entre l'instanciation et la destruction

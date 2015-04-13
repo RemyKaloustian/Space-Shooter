@@ -18,9 +18,11 @@ public class DestroyByBoundary : MonoBehaviour
 		}
 		
 	}//Start()
-	void OnTriggerExit(Collider other)
+	void OnTriggerExit(Collider other) //Lorsque other sort du volume dans lequel il est (ici le cube de boundary)
 	{
-		Destroy (other.gameObject);
+		Destroy (other.gameObject); // on le détruit
+
+        ///Custom code=========================================================
 		if (other.tag == "Asteroid") 
 		{
 			gameController.AddMissed();

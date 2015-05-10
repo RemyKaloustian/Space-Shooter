@@ -1,32 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour 
 {
-	public GameObject hazard; //référence à l'asteroïde
+	public GameObject hazard;
 	public Vector3 spawnValues;
-	public int hazardCount;
+	private int hazardCount;
+    private int hazardAdded;
 	public float spawnWait;
 	public float startWait;
 	public float waveWait;
 
-	public GUIText scoreText;
-	public GUIText restartText;
-	public GUIText gameOverText;
-	public GUIText missedText;
+	
+	
+	public Text missedText;
+    public GameObject _gameOverPanel;
+    public Text _scoreText;
+    public Text _recordText;
 
 	private bool gameOver;
 	private bool restart;
 	private int score;
 	private int missed;
-    
+
 	void Start()
 	{
 		gameOver = false;
 		restart = false;
-		restartText.text = "";
-		gameOverText.text = "";
-		missedText.text = "";
+        hazardCount = 5;
+        hazardAdded = 5;
 		score = 0;
 		missed = 0;
 		UpdateScore ();
@@ -50,27 +53,27 @@ public class GameController : MonoBehaviour
 		{
 			for (int i = 0; i< hazardCount; ++i) 
 			{
-                //Les spawnspots sont définis , y et z dans l'éditeur et x au random et grâce à l'éditeur
 				Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
 				Quaternion spawnRotation = Quaternion.identity;
 				Instantiate (hazard, spawnPosition, spawnRotation);
 				yield return new WaitForSeconds (spawnWait);
+               
 			}
 			yield return new WaitForSeconds (waveWait);
-
+            hazardCount += hazardAdded;
+            Debug.Log("Vague de  :  " + hazardCount);
 			if(gameOver)
 			{
-				restartText.text = "Press 'R' for restart";
+				
 				restart = true;
 				break;
 			}
 		}
 	}//SpawnWaves()
 
-	public void AddScore(int newScore)
+	public void AddScore()
 	{
-
-		score += newScore;
+		score ++;
 		UpdateScore ();
 	}//AddScore()
 
@@ -82,24 +85,40 @@ public class GameController : MonoBehaviour
 
 	void UpdateMissed()
 	{
-		if (missed <= 10) 
+        Debug.Log("Missed : " + missed);
+		if (missed <=10) 
 		{
-			missedText.text = "Missed Asteroids " + missed;
+			missedText.text  = "Astéroïdes manqués : " + missed;
 		}
 
-	}
+        if(missed == 10)
+        {
+            GameOver();
+        }
+
+	}//UpdateMissed()
 
 	void UpdateScore()
 	{
-		scoreText.text = "Score : " + score;
+		
 
 	}//UpdateScore
 
 	public void GameOver()
 	{
-		gameOverText.text = "Game Over, too bad you suck...";
+		//gameOverText.text = "Game Over, too bad you suck...";
 		gameOver = true;
-	}
+        _scoreText.text += score.ToString();
+
+        if (PlayerPrefs.GetInt("_record") < score)
+            PlayerPrefs.SetInt("_record", score);
+
+        _recordText.text += PlayerPrefs.GetInt("_record").ToString();
+
+
+        _gameOverPanel.SetActive(true);
+
+	}//GameOver()
 
 
 }//GameController
